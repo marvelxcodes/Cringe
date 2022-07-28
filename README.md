@@ -14,9 +14,10 @@
 
 **Frontend**
     - [React JS](https://reactjs.org/)
+    - [Next JS](https://nextjs.org/)
 
 **Backend**
-    - [Express JS](https://expressjs.com/)
+    - [Sanity CMS](https://sanity.io)
     - [Node JS](https://nodejs.org/)
 
 **Styling**
@@ -25,13 +26,9 @@
 
 **Libraries**
     - [Bootstrap Icons](https://icons.getbootstrap.com/)
-    - [Firebase](https://firebase.google.com/)
-    - [Prisma](https://www.prisma.io/)
-    - [MySQL](https://www.mysql.com/)
 
 **Tools**
     - [Typescript](https://www.typescriptlang.org/)
-    - [Vite JS](https://vitejs.dev/)
 
 # Clone this Repo
 
