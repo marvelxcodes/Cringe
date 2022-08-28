@@ -1,0 +1,23 @@
+{
+  "name": "server",
+  "version": "1.0.0",
+  "description": "A Social Media app built with MERN Stack",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "dev": "nodemon ."
+  },
+  "keywords": [],
+  "author": "marvelxcodes",
+  "license": "ISC",
+  "dependencies": {
+    "@prisma/client": "^4.2.1",
+    "body-parser": "^1.20.0",
+    "cors": "^2.8.5",
+    "express": "^4.18.1"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.19",
+    "prisma": "^4.2.1"
+  }
+}
