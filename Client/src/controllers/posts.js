@@ -2,7 +2,7 @@ import axios from 'axios'
 import URL from '../utils/URL'
 
 export const getPosts = async () => {
-    const res = await axios.get(`${URL}/posts`) 
+    const res = await axios.get(`${URL}/posts`)
     return res
 }
 

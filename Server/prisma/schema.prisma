@@ -7,13 +7,21 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model Post {
-  id           String   @id @default(auto()) @map("_id") @db.ObjectId
-  title        String
-  message      String
-  creator      String
-  tags         String[]
-  selectedFile String
-  likeCount    Int      @default(0)
-  createdAt    DateTime @default(now())
+model Comment {
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
+  body      String
+  user      User     @relation(fields: [userId], references: [id])
+  createdAt DateTime @default(now())
+  Post      Post    @relation(fields: [postId], references: [id])
+  postId    String?  @db.ObjectId
+  userId    String   @db.ObjectId
+}
+
+model User {
+  id         String    @id @default(auto()) @map("_id") @db.ObjectId
+  username   String
+  email      String
+  profileImg String
+  posts      Post[]
+  Comment    Comment[]
 }

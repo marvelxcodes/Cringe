@@ -3,7 +3,7 @@ import prisma from '../prisma/index.js'
 export const getPosts = async (req, res) => {
     try {
         const posts = await prisma.post.findMany()
-        await res.status(200).json(posts)
+        res.status(200).json(posts)
     } catch (err) {
         console.log(err)
         res.send(err)
