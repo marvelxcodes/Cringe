@@ -6,7 +6,6 @@ import { useState } from "react"
 
 const Posts = () => {
   const { data, isLoading, isError } = useQuery(["posts"], getPosts)
-  const [postId, setPostId] = useState("Hello")
   return (
     <div className="flex container p-5 justify-center flex-wrap">
       {isLoading && "Loading..."}
@@ -14,7 +13,6 @@ const Posts = () => {
       {data?.data?.map((post) => (
         <Post {...post} />
       ))}
-      {postId && <Comments id={postId} setId={setPostId} />}
     </div>
   )
 }

@@ -1,4 +1,4 @@
-import ReactDOM from 'react-dom/client'
+import { createRoot } from 'react-dom/client'
 import {
   BrowserRouter,
   Routes, Route
@@ -37,4 +37,4 @@ const App = () => {
 }
 
 const Root = document.getElementById('root')
-ReactDOM.createRoot(Root).render(<App />)
+createRoot(Root).render(<App />)
