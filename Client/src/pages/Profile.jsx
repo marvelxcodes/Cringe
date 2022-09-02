@@ -3,7 +3,7 @@ import Protected from "../components/Protected";
 
 const Profile = () => {
   const { user } = useUser()
-  const { signOut, } = useClerk()
+  const { signOut } = useClerk()
   return (
     <Protected>
       <div className="flex md:flex-row flex-col h-[calc(100vh-4rem)] w-screen">

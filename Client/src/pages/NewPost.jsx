@@ -1,7 +1,7 @@
 import { useState } from "react"
 import { useRef } from "react"
 import { useUser } from "@clerk/clerk-react"
-import { Protected } from "../components/Protected"
+import Protected from "../components/Protected"
  
 const NewPost = () => {
 
@@ -12,7 +12,7 @@ const NewPost = () => {
 
   // Getting author name from Clerk
   const { user } = useUser()
-  const author = user.primaryEmailAddress.emailAddress
+  const author = user && user.primaryEmailAddress.emailAddress
 
   return (
     <Protected>

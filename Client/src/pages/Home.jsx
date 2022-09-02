@@ -1,6 +1,6 @@
 import { useInfiniteQuery, useQuery } from '@tanstack/react-query'
 import Post from '../components/Posts/Post'
-import { getPosts } from '../controllers/posts'
+import { getPosts } from '../fetchers/posts'
 
 const Home = () => {
   const { data, isLoading, isError } = useQuery(["posts"], getPosts)

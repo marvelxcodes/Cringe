@@ -13,7 +13,6 @@ export const getPosts = async (req, res) => {
 export const createPost = async (req, res) => {
     const { body } = res
     try {
-        
         await prisma.post.create({
             data: body
         })
@@ -21,4 +20,13 @@ export const createPost = async (req, res) => {
     } catch (err) {
         res.send(err)
     }
+}
+
+export const deletePost = async (req, res) => {
+    const { id } = res.body
+    await prisma.post.delete({
+        where: {
+            id
+        }
+    })
 }

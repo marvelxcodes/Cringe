@@ -11,6 +11,6 @@ export const createPost = async data => {
     return data
 }
 
-export const createImage = data => {
-    return axios.post(`${URL}/posts/image`, data)
+export const deletePost = id => {
+    return axios.delete(`${URL}/posts/delete/${id}`)
 }

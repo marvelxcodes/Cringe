@@ -30,7 +30,7 @@ model Post {
 
 model Liked {
   id     String @id @default(auto()) @map("_id") @db.ObjectId
-  email  String
+  email  String @unique
   Post   Post   @relation(fields: [postId], references: [id])
   postId String @unique @db.ObjectId
 }

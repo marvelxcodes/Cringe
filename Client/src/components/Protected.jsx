@@ -1,4 +1,4 @@
-import { SignedIn } from '@clerk/clerk-react'
+import { SignedIn, SignedOut, RedirectToSignIn } from '@clerk/clerk-react'
 
 const Protected = ({children}) => {
   return (
