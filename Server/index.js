@@ -5,12 +5,13 @@ import bodyparser from 'body-parser'
 import Posts from './routes/posts.js';
 
 const App = express();
+const PORT = process.env.PORT || 4000;
 
 App.use(cors())
 
 App.use("/posts", Posts)
 
-const PORT = process.env.PORT || 4000;
+App.use(express.static("public"))
 
 App.use(bodyparser.json({
     limit: "30mb",

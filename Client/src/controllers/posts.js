@@ -6,7 +6,11 @@ export const getPosts = async () => {
     return res
 }
 
-export const createPost = async (data) => {
+export const createPost = async data => {
     await axios.post(`${URL}/posts/create`, data)
     return data
+}
+
+export const createImage = data => {
+    return axios.post(`${URL}/posts/image`, data)
 }

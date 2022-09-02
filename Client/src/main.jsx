@@ -7,6 +7,7 @@ import {
   QueryClientProvider as QueryProvider
 } from '@tanstack/react-query'
 import QueryClient from './utils/QueryClient'
+import ClerkProvider from './libs/Clerk'
 
 // Stylesheets
 import './libs/Tailwind.css'
@@ -20,19 +21,21 @@ import Profile from './pages/Profile'
 
 const App = () => {
   return (
-  <main className="pt-16 w-full">
-    <QueryProvider client={QueryClient}>
-      <BrowserRouter>
-        <Header />
-        <Routes>
-          <Route path='/' element={<Home />} />
-          <Route path='/NewPost' element={<NewPost />} />
-          <Route path='/Trending' element={<Trending />} />
-          <Route path='/Profile' element={<Profile />} />
-        </Routes>
-      </BrowserRouter>
-    </QueryProvider>
-  </main>
+    <BrowserRouter>
+      <QueryProvider client={QueryClient}>
+        <ClerkProvider>
+          <main className="pt-16 w-full">
+            <Header />
+            <Routes>
+              <Route path='/' element={<Home />} />
+              <Route path='/NewPost' element={<NewPost />} />
+              <Route path='/Trending' element={<Trending />} />
+              <Route path='/Profile' element={<Profile />} />
+            </Routes>
+          </main>
+        </ClerkProvider>
+      </QueryProvider>
+    </BrowserRouter>
   )
 }
 

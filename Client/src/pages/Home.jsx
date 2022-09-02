@@ -1,12 +1,17 @@
-import { useInfiniteQuery } from '@tanstack/react-query'
-import Posts from '../components/Posts'
+import { useInfiniteQuery, useQuery } from '@tanstack/react-query'
+import Post from '../components/Posts/Post'
+import { getPosts } from '../controllers/posts'
 
 const Home = () => {
+  const { data, isLoading, isError } = useQuery(["posts"], getPosts)
   return (
-    <div className='w-full flex justify-center'>
-      <Posts />
+    <div className="w-full flex container p-5 justify-center flex-wrap">
+      {isLoading && "Loading..."}
+      {isError && "Error Occured!"}
+      {data?.data?.map((post) => (
+        <Post {...post} />
+      ))}
     </div>
   )
 }
-
 export default Home

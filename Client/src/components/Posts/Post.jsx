@@ -10,7 +10,7 @@ const Post = (props) => {
     
   }, [isHearted])
   return (
-    <div className='h-96 w-80 m-5 outline select-none outline-2 outline-gray-200 hover:outline-gray-300 transition-all rounded-xl'>
+    <div key={props.id} className='h-96 w-80 m-5 outline select-none outline-2 outline-gray-200 hover:outline-gray-300 transition-all rounded-xl'>
       {postId && <Comments setId={setPostId} id={postId} />}
       <img src={props.selectedFile} className="rounded-t-xl aspect-video" alt="Post-Thumbnail" />
       <div className="p-5">
