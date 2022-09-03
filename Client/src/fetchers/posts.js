@@ -8,9 +8,8 @@ export const getPosts = async () => {
 
 export const createPost = async data => {
     await axios.post(`${URL}/posts/create`, data)
-    return data
 }
 
-export const deletePost = id => {
-    return axios.delete(`${URL}/posts/delete/${id}`)
+export const deletePost = async id => {
+    await axios.delete(`${URL}/posts/delete/${id}`)
 }

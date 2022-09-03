@@ -1,6 +1,5 @@
 import { Prisma } from '@prisma/client'
 import prisma from '../prisma/index.js'
-import upload from './multer.js'
 
 export const getLikes = async (req, res) => {
     const { email } = req.params

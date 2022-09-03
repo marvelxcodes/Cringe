@@ -22,12 +22,13 @@ model Post {
   creator   String
   tags      String[]
   thumbnail String
+  likes     Int @default(0)
   createdAt DateTime  @default(now())
   Comment   Comment[]
 }
 
 model Liked {
-  id     String @id @default(auto()) @map("_id") @db.ObjectId
-  email  String @unique
+  id     String   @id @default(auto()) @map("_id") @db.ObjectId
+  email  String   @unique
   postId String[]
 }

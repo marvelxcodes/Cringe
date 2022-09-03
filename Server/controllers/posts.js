@@ -1,5 +1,4 @@
 import prisma from '../prisma/index.js'
-import upload from './multer.js'
 
 export const getPosts = async (req, res) => {
     try {
@@ -11,11 +10,9 @@ export const getPosts = async (req, res) => {
 }
 
 export const createPost = async (req, res) => {
-    const { body } = res
     try {
-        upload()
         await prisma.post.create({
-            data: body
+            data: req.body
         })
         res.status(200).json({status: "Success!"})
     } catch (err) {

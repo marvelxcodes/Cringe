@@ -4,6 +4,7 @@ import { getPosts } from '../fetchers/posts'
 
 const Home = () => {
   const { data, isLoading, isError } = useQuery(["posts"], getPosts)
+  const {  } = useQuery(["liked"], getPosts)
   return (
     <div className="w-full flex container p-5 justify-center flex-wrap">
       {isLoading && "Loading..."}
