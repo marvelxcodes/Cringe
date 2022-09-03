@@ -1,7 +1,7 @@
 import prisma from '../prisma/index.js'
-import upload from './multer.js'
 
-export const getPosts = async (req, res) => {
+export const getComments = async (req, res) => {
+    const {} = req.params
     try {
         const posts = await prisma.post.findMany()
         res.status(200).json(posts)
@@ -10,12 +10,10 @@ export const getPosts = async (req, res) => {
     }
 }
 
-export const createPost = async (req, res) => {
-    const { body } = res
+export const createComment = async (req, res) => {
     try {
-        upload()
-        await prisma.post.create({
-            data: body
+        await prisma.comment.create({
+            data: res.body
         })
         res.status(200).json({status: "Success!"})
     } catch (err) {
@@ -23,7 +21,7 @@ export const createPost = async (req, res) => {
     }
 }
 
-export const deletePost = async (req, res) => {
+export const deleteComment = async (req, res) => {
     const { id } = res.body
     await prisma.post.delete({
         where: {

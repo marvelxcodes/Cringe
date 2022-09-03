@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import { Link, useLocation } from 'react-router-dom'
+import Github from '../components/Elements/Github'
 
 const Header = () => {
   const [isOpen, setIsOpen] = useState(false)
@@ -42,13 +43,4 @@ const NavToggle = ({ isOpen, setIsOpen }) => (
     <path className={`${isOpen ? "hidden" : ""}`} strokeLinecap="round" strokeLinejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" />
     <path className={`${isOpen ? "" : "hidden"}`} strokeLinecap="round" strokeLinejoin="round" d="M11.25 4.5l7.5 7.5-7.5 7.5m-6-15l7.5 7.5-7.5 7.5" />
   </svg>
-)
-
-const Github = ({ setIsOpen, isOpen }) => (
-  <a href='https://github.com/marvelxcodes' className={`${isOpen ? "" : "md:flex hidden"} flex-col text-center hover:text-gray-200
-        text-purple-300 font-semibold transition-all`}
-     onClick={() => setIsOpen(false)}>
-    <i className={`bi bi-github text-2xl`}></i>
-    <p className='text-xs text-center hidden md:flex'>Github</p>
-  </a>
 )
