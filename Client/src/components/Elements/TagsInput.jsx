@@ -1,19 +1,19 @@
 import { useRef } from 'react'
-import { useState } from 'react'
 
 const TagsInput = ({tags, setTags}) => {
     const inputRef = useRef()
-
+    const id = () => Math.floor(Math.random()*10000)
+    
     const appendTag = event => {
         event.preventDefault()
         if(inputRef.current.value.length!=0) {
             setTags([...tags, inputRef.current.value])
             inputRef.current.value = ""
+            inputRef.current.focus()
         }
     }
 
     const removeTag = name => {
-        
         const filteredArray = tags.filter(tag => {
             if (tag != name) {
                 return tag
@@ -32,7 +32,7 @@ const TagsInput = ({tags, setTags}) => {
     </form>
     <div className='h-20 space-y-3 overflow-y-scroll'>
         {tags && tags.map(tag => (
-            <Tag removeTag={removeTag} name={tag} />
+            <Tag key={id()} removeTag={removeTag} name={tag} />
         ))}
     </div>
     </>
@@ -41,8 +41,7 @@ const TagsInput = ({tags, setTags}) => {
 
 const Tag = (props) => {
     return (
-        <div key={props.name+'#key'}
-                className='overflow-clip relative w-56 bg-gray-300 h-7 rounded-full flex items-center justify-center px-3'>
+        <div className='overflow-clip relative w-56 bg-gray-300 h-7 rounded-full flex items-center justify-center px-3'>
             <p className='overflow-clip h-7 text-center pt-1 text-gray-500 w-5/6 text-sm'>
                 {props.name}
             </p>

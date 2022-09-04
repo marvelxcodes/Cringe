@@ -16,7 +16,7 @@ export const getLikes = async (req, res) => {
 }
 
 export const createLike = async (req, res) => {
-    const { email, liked, postId } = res.body
+    const { email, liked, likes, postId } = req.body
     try {
         await prisma.liked.create({
             data: {
@@ -29,6 +29,14 @@ export const createLike = async (req, res) => {
             await prisma.liked.update({
                 data: {
                     postId: [...liked, postId]
+                }
+            })
+            await prisma.post.update({
+                where: {
+                    id: postId
+                },
+                data: {
+                    likes: likes+1
                 }
             })
             res.status(200).json({status: "LikeAdded!"})

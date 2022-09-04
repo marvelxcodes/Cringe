@@ -1,14 +1,12 @@
-import { useUser, useClerk } from "@clerk/clerk-react";
+import { useUser, useClerk, UserProfile } from "@clerk/clerk-react";
+import { useState } from "react";
+import { Link } from "react-router-dom";
 import Protected from "../components/Protected";
 
 const Profile = () => {
   const { user } = useUser()
   const { signOut } = useClerk()
-
-  const scrollToPosts = () => {
-
-  }
-
+  const [account, setAccount] = useState(false)
   return (
     <Protected>
       <div className="flex md:flex-row flex-col h-[calc(100vh-4rem)] w-screen">
@@ -21,7 +19,9 @@ const Profile = () => {
           <h1 className="text-3xl font-extrabold text-gray-400">{user && user.fullName}</h1>
           <h3 className="font-extrabold text-gray-300">{user && user.primaryEmailAddress.emailAddress}</h3>
           <div className="flex">
-            <Button onClick={scrollToPosts}>My Posts</Button>
+            <Link to="/Account">
+              <Button>Account</Button>
+            </Link>
             <Button onClick={signOut}>Sign Out</Button>
           </div>
         </div>

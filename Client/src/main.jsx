@@ -18,6 +18,7 @@ import Home from './pages/Home'
 import NewPost from './pages/NewPost'
 import Trending from './pages/Trending'
 import Profile from './pages/Profile'
+import Account from './pages/Account'
 
 const App = () => {
   return (
@@ -31,6 +32,7 @@ const App = () => {
               <Route path='/NewPost' element={<NewPost />} />
               <Route path='/Trending' element={<Trending />} />
               <Route path='/Profile' element={<Profile />} />
+              <Route path='/Account' element={<Account />} />
             </Routes>
           </main>
         </ClerkProvider>

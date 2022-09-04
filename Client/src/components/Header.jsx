@@ -29,11 +29,11 @@ const NavItem = ({ children, i, href, setIsOpen, isOpen }) => {
   const { pathname } = useLocation()
   return(
   <Link to={href}>
-    <a className={`${isOpen ? "" : "md:flex hidden"} flex-col text-center ${pathname==href?"text-gray-300":"text-purple-300"} hover:text-gray-200 font-semibold transition-all`}
+    <span className={`${isOpen ? "" : "md:flex hidden"} flex-col text-center ${pathname==href?"text-white":"text-purple-300"} hover:text-gray-200 font-semibold transition-all`}
       onClick={() => setIsOpen(false)}>
       <i className={`bi bi-${i} text-2xl`}></i>
       <p className='text-xs text-center hidden md:flex'>{children}</p>
-    </a>
+    </span>
   </Link>
   )
 }
