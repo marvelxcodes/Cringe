@@ -12,6 +12,16 @@ export const getPosts = () => {
     return query
 }
 
+export const getTrending = () => {
+    const query = useQuery(["posts"], async() => {
+        const res = await axios.get(`${URL}/posts/trending`)
+        return res.data
+    }, {
+        enabled: false
+    })
+    return query
+}
+
 export const createPost = async data => {
     await axios.post(`${URL}/posts/create`, data)
 }

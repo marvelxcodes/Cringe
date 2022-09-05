@@ -12,10 +12,13 @@ const Home = () => {
   const { data: posts, refetch:fetchPosts } = getPosts()
   const { data: liked, refetch:fetchLiked } = getLiked(email)
 
+  const fetchAll = () => {
+    fetchLiked()
+    fetchPosts()
+  }
   useEffect(() => {
     if (user) {
-      fetchLiked()
-      fetchPosts()
+      fetchAll()
     }
   }, [user])
   
@@ -26,7 +29,7 @@ const Home = () => {
           key={post.id}
           liked={liked?.postId}
           email={email}
-          refetch={fetchLiked}
+          refetch={fetchAll}
           {...post}
         />
       ))}

@@ -71,7 +71,7 @@ const PostComment = ({postId, refetch}) => {
     }
   }
   return (
-    <form onClick={createHandler} className="flex py-3 items-center justify-center">
+    <form onClick={event => { event.preventDefault(); createHandler()}} className="flex py-3 items-center justify-center">
       <input ref={commentRef} type="text" className="w-5/6 px-5 caret-purple-600 focus:outline-purple-500 h-10 outline outline-1 rounded-sm outline-gray-300 text-sm" placeholder="Write Something . . ." />
       <button onClick={createHandler} className="h-10 flex items-center justify-center hover:bg-purple-700 transition-colors active:opacity-80 aspect-square bg-purple-500 outline outline-1 rounded-sm outline-purple-500 ml-1.5 text-white">
         <i className="bi bi-send-fill"></i>

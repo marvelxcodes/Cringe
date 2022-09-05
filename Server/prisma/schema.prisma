@@ -22,7 +22,7 @@ model Post {
   creator   String
   tags      String[]
   thumbnail String
-  likes     Int @default(0)
+  likes     Int       @default(0)
   createdAt DateTime  @default(now())
   Comment   Comment[]
 }

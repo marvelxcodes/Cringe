@@ -1,4 +1,3 @@
-import { Prisma } from '@prisma/client'
 import prisma from '../prisma/index.js'
 
 export const getLikes = async (req, res) => {
@@ -16,32 +15,28 @@ export const getLikes = async (req, res) => {
 }
 
 export const createLike = async (req, res) => {
-    const { email, liked, likes, postId } = req.body
-    try {
+    const { email, liked, likes, postId, currPostId } = req.body
+
+    if (liked===undefined) {
         await prisma.liked.create({
             data: {
                 postId, email
             }
         })
-        res.status(200).json({status: "UserCreated!"})
-    } catch (err) {
-        if (err instanceof Prisma.PrismaClientKnownRequestError && err.code === "P2002") {
-            await prisma.liked.update({
-                data: {
-                    postId: [...liked, postId]
-                }
-            })
-            await prisma.post.update({
-                where: {
-                    id: postId
-                },
-                data: {
-                    likes: likes+1
-                }
-            })
-            res.status(200).json({status: "LikeAdded!"})
-        } else {
-            res.send("Error Occured!")
-        }
+    } else {
+        await prisma.liked.update({
+            data: {
+                postId: [...liked, postId]
+            }
+        })
     }
+    await prisma.post.update({
+        where: {
+            id: currPostId
+        },
+        data: {
+            likes: likes+1
+        }
+    })
+    res.status(200).json({status: "success"})
 }

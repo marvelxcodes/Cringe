@@ -9,6 +9,19 @@ export const getPosts = async (req, res) => {
     }
 }
 
+export const getTrending = async (req, res) => {
+    try {
+        const posts = await prisma.post.findMany({
+            orderBy: {
+                likes: 'asc'
+            }
+        })
+        res.status(200).json(posts)
+    } catch (err) {
+        res.send(err)
+    }
+}
+
 export const createPost = async (req, res) => {
     try {
         await prisma.post.create({

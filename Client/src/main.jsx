@@ -13,6 +13,7 @@ import ClerkProvider from './libs/Clerk'
 import './libs/Tailwind.css'
 import './utils/style.css'
 
+// Pages
 import Header from './components/Header'
 import Home from './pages/Home'
 import NewPost from './pages/NewPost'

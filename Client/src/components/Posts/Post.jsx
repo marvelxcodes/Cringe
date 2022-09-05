@@ -10,21 +10,27 @@ const Post = (props) => {
   // Shows Comment Box if has {blogId}
   const [postId, setPostId] = useState("")
   const { user, isSignedIn } = useUser()
-  const [isLiked, setIsLiked] = useState(props.liked===undefined || !props.liked.includes(props.id)?false:true)
-  const { mutate } = useMutation(createLike)
 
-  const handleLike = () => setIsLiked(true)
-  
-  useEffect(() => {
+  const isLiked = props.liked===undefined?false:
+                  props.liked?.includes(props.id)
+  const { mutate } = useMutation(createLike, {
+    onSuccess: () => {
+      props.refetch()
+    }
+  })
+
+  const handleLike = () => {
     if (isSignedIn && !isLiked) {
       mutate({
+        currPostId:props.id,
         email: user?.primaryEmailAddress?.emailAddress,
         postId: [...props.liked || [], props.id],
         likes: props.likes,
         liked: props.liked
       })
     }
-  }, [isLiked])
+  }
+
 
   return (
     <div className='w-80 m-5 outline select-none outline-2 bg-white outline-gray-200 hover:outline-gray-300 transition-all rounded-xl'>
