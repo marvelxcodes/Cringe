@@ -14,7 +14,6 @@ const Home = () => {
 
   useEffect(() => {
     if (user) {
-      console.log(user)
       fetchLiked()
       fetchPosts()
     }
@@ -27,6 +26,7 @@ const Home = () => {
           key={post.id}
           liked={liked?.postId}
           email={email}
+          refetch={fetchLiked}
           {...post}
         />
       ))}

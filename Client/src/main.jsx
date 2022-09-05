@@ -22,7 +22,7 @@ import Account from './pages/Account'
 
 const App = () => {
   return (
-    <BrowserRouter>
+    <BrowserRouter basename='/'>
       <QueryProvider client={QueryClient}>
         <ClerkProvider>
           <main className="pt-16 w-full">

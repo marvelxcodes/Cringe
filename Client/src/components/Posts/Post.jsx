@@ -1,6 +1,6 @@
 import moment from 'moment'
 import { createLike } from '../../fetchers/liked'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import Comments from './Comments'
 import { useUser } from '@clerk/clerk-react'
 import { useMutation } from '@tanstack/react-query'
@@ -10,22 +10,21 @@ const Post = (props) => {
   // Shows Comment Box if has {blogId}
   const [postId, setPostId] = useState("")
   const { user, isSignedIn } = useUser()
-  const isLiked = props.liked.includes(props.id)
-
+  const [isLiked, setIsLiked] = useState(props.liked===undefined || !props.liked.includes(props.id)?false:true)
   const { mutate } = useMutation(createLike)
 
-  const handleLike = () => {
-    if (isSignedIn) {
-      if (!isLiked) {
-        mutate({
-          email: user?.primaryEmailAddress?.emailAddress,
-          postId: [...props.liked, props.id],
-          likes: props.likes,
-          liked: props.liked
-        })
-      }
-    } else signUp()
-  }
+  const handleLike = () => setIsLiked(true)
+  
+  useEffect(() => {
+    if (isSignedIn && !isLiked) {
+      mutate({
+        email: user?.primaryEmailAddress?.emailAddress,
+        postId: [...props.liked || [], props.id],
+        likes: props.likes,
+        liked: props.liked
+      })
+    }
+  }, [isLiked])
 
   return (
     <div className='w-80 m-5 outline select-none outline-2 bg-white outline-gray-200 hover:outline-gray-300 transition-all rounded-xl'>

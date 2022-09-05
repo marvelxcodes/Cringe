@@ -3,7 +3,7 @@ import URL from "../utils/URL";
 import { useQuery } from "@tanstack/react-query";
 
 export const getLiked = email => {
-    const query = useQuery(["liked"],async () => {
+    const query = useQuery(["liked"], async () => {
         const res = await axios.get(`${URL}/likes/${email}`)
         return res.data
     }, {
