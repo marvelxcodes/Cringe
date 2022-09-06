@@ -12,6 +12,10 @@ export const getLiked = email => {
     return query
 }
 
+export const appendLike = async data => {
+    await axios.post(`${URL}/likes/append`, data)
+}
+
 export const createLike = async data => {
     await axios.post(`${URL}/likes/create`, data)
 }

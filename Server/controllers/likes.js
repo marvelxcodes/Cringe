@@ -14,22 +14,17 @@ export const getLikes = async (req, res) => {
     }
 }
 
-export const createLike = async (req, res) => {
-    const { email, liked, likes, postId, currPostId } = req.body
-
-    if (liked===undefined) {
-        await prisma.liked.create({
-            data: {
-                postId, email
-            }
-        })
-    } else {
-        await prisma.liked.update({
-            data: {
-                postId: [...liked, postId]
-            }
-        })
-    }
+export const appendLike = async (req, res) => {
+    const { likes, postId, currPostId, email } = req.body
+    await prisma.liked.update({
+        data: {
+            postId
+        },
+        where: {
+            email
+        }
+    })
+    
     await prisma.post.update({
         where: {
             id: currPostId
@@ -38,5 +33,17 @@ export const createLike = async (req, res) => {
             likes: likes+1
         }
     })
+    res.status(200).json({status: "success"})
+}
+
+export const createLiked = async (req, res) => {
+    const { email } = req.body
+
+    await prisma.liked.create({
+        data: {
+            postId: [], email
+        }
+    })
+    
     res.status(200).json({status: "success"})
 }

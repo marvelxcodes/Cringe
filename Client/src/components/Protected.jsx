@@ -7,7 +7,7 @@ const Protected = ({children}) => {
         {children}
     </SignedIn>
     <SignedOut>
-        <RedirectToSignIn />
+        <RedirectToSignIn afterSignUpUrl={"/SignedUp"} />
     </SignedOut>
     </>
   )

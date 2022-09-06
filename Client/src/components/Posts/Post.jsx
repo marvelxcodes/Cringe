@@ -1,9 +1,10 @@
 import moment from 'moment'
-import { createLike } from '../../fetchers/liked'
-import { useEffect, useState } from 'react'
+import { appendLike } from '../../fetchers/liked'
+import { useState } from 'react'
 import Comments from './Comments'
 import { useUser } from '@clerk/clerk-react'
 import { useMutation } from '@tanstack/react-query'
+import Protected from '../Protected'
 
 const Post = (props) => {
 
@@ -11,9 +12,8 @@ const Post = (props) => {
   const [postId, setPostId] = useState("")
   const { user, isSignedIn } = useUser()
 
-  const isLiked = props.liked===undefined?false:
-                  props.liked?.includes(props.id)
-  const { mutate } = useMutation(createLike, {
+  const isLiked = props.liked?.includes(props.id)
+  const { mutate } = useMutation(appendLike, {
     onSuccess: () => {
       props.refetch()
     }
@@ -24,9 +24,8 @@ const Post = (props) => {
       mutate({
         currPostId:props.id,
         email: user?.primaryEmailAddress?.emailAddress,
-        postId: [...props.liked || [], props.id],
+        postId: [...props.liked, props.id],
         likes: props.likes,
-        liked: props.liked
       })
     }
   }
@@ -41,9 +40,11 @@ const Post = (props) => {
         <h6 className="text-gray-400 text-sm text-center mt-1">Posted By {props.creator}</h6>
         <h6 className="text-gray-400 text-sm text-center mt-1">• {moment(props.createdAt).fromNow()}</h6>
         <div className="flex justify-center items-center mt-3 space-x-10">
-          <i onClick={handleLike} className={`bi cursor-pointer bi-heart-fill text-xl not-italic ${isLiked?"text-purple-500":"text-gray-400"}`}>
-            <span className="ml-1 text-lg">{props.likes}</span>
-          </i>
+          <Protected>
+            <i onClick={handleLike} className={`bi cursor-pointer bi-heart-fill text-xl not-italic ${isLiked?"text-purple-500":"text-gray-400"}`}>
+              <span className="ml-1 text-lg">{props.likes}</span>
+            </i>
+          </Protected>
           <i onClick={() => setPostId(props.id)}
              className="bi text-gray-400 cursor-pointer bi-chat-heart-fill text-xl not-italic">
           </i>

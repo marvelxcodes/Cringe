@@ -20,6 +20,7 @@ import NewPost from './pages/NewPost'
 import Trending from './pages/Trending'
 import Profile from './pages/Profile'
 import Account from './pages/Account'
+import SignedUp from './pages/SignedUp'
 
 const App = () => {
   return (
@@ -34,6 +35,7 @@ const App = () => {
               <Route path='/Trending' element={<Trending />} />
               <Route path='/Profile' element={<Profile />} />
               <Route path='/Account' element={<Account />} />
+              <Route path='/SignedUp' element={<SignedUp />} />
             </Routes>
           </main>
         </ClerkProvider>
