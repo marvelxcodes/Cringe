@@ -10,7 +10,7 @@ const storage = (filename) => {
     }
   })
 }
-  
+
 const upload = (filename) => {
     return multer({ storage: storage(filename) })
 }

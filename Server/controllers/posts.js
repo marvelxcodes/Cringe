@@ -32,10 +32,10 @@ export const getTrending = async (req, res) => {
 }
 
 export const createPost = async (req, res) => {
-    const { caption, creator, tags, thumbnail, form } = req.body
+    const { caption, creator, tags, form } = req.body
     const imageName = uuid()
     try {
-        await prisma.post.create({
+        const res = await prisma.post.create({
             data: {
                 caption,
                 creator,
@@ -43,8 +43,7 @@ export const createPost = async (req, res) => {
                 tags
             }
         })
-        console.log(form)
-        upload(imageName).single('image')
+        console.log(form, res)
         res.status(200).json({ status: "Success!" })
     } catch (err) {
         res.send(err)

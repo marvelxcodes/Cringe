@@ -9,19 +9,18 @@ const NewPost = () => {
 
   // Input Data
   const captionRef = useRef()
-  const [thumbnail, setThumbnail] = useState()
+  const [thumbnail, setThumbnail] = useState("")
   const [tags, setTags] = useState([])
 
-  // Getting author name from Clerk
   const { user } = useUser()
 
-  const createHandler = () => {
+  const createHandler = async () => {
     const form = new FormData()
-    form.append("image", thumbnail)
-    createPost({
+    form.append('image', thumbnail)
+    await createPost({
       caption: captionRef?.current?.value,
       creator: user?.fullName,
-      tags, thumbnail, form
+      tags, form
     }).then(() => {
       setTags([])
       captionRef.current.value = ""

@@ -23,7 +23,7 @@ const Trending = () => {
   }, [user])
   
   return (
-    <div className="w-full flex container p-5 justify-center flex-wrap">
+    <div className="w-full flex p-5 justify-center flex-wrap">
       {posts && posts.map((post) => (
         <Post
           key={post.id}

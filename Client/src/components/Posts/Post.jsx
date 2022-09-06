@@ -8,7 +8,6 @@ import Protected from '../Protected'
 import URL from '../../utils/URL'
 
 const Post = (props) => {
-
   // Shows Comment Box if has {blogId}
   const [postId, setPostId] = useState("")
   const { user, isSignedIn } = useUser()
@@ -47,6 +46,7 @@ const Post = (props) => {
           </Protected>
           <i onClick={() => setPostId(props.id)}
              className="bi text-gray-400 cursor-pointer bi-chat-heart-fill text-xl not-italic">
+             <span className="ml-1 text-lg font-bold">{props._count.Comment}</span>
           </i>
         </div>
       </div>
