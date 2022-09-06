@@ -27,9 +27,6 @@ App.use(bodyparser.urlencoded({
 App.use("/posts", Posts)
 App.use("/comments", Comments)
 App.use("/likes", Likes)
-App.post("/upload", (req, res) => {
-    console.log(req.body)
-})
 
 App.listen(PORT, () => {
     console.log(`Server is Listening on Port: ${PORT}!`)

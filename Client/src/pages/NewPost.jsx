@@ -4,7 +4,6 @@ import TagsInput from "../components/Elements/TagsInput"
 import { useUser } from "@clerk/clerk-react"
 import Protected from "../components/Protected"
 import { createPost } from '../fetchers/posts'
-import { upload } from '../fetchers/upload'
 
 const NewPost = () => {
 
@@ -17,11 +16,12 @@ const NewPost = () => {
   const { user } = useUser()
 
   const createHandler = () => {
-    upload(thumbnail)
+    const form = new FormData()
+    form.append("image", thumbnail)
     createPost({
       caption: captionRef?.current?.value,
       creator: user?.fullName,
-      tags, thumbnail
+      tags, thumbnail, form
     }).then(() => {
       setTags([])
       captionRef.current.value = ""

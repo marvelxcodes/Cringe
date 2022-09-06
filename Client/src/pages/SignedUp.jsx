@@ -3,6 +3,7 @@ import { useMutation } from "@tanstack/react-query"
 import { useEffect } from "react"
 import { useNavigate } from 'react-router-dom'
 import Protected from "../components/Protected"
+import { useUser } from "@clerk/clerk-react"
 
 const SignedUp = () => {
   const navigate = useNavigate()
@@ -12,9 +13,15 @@ const SignedUp = () => {
     }
   })
 
+  const { user } = useUser()
+
   useEffect(() => {
-    mutate()
-  }, [])
+    if (user) {
+      mutate({
+        email: user.primaryEmailAddress.emailAddress
+      })
+    }
+  }, [user])
   return (
     <Protected>Redirecting ...</Protected>
   )

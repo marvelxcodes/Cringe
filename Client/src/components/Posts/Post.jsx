@@ -5,6 +5,7 @@ import Comments from './Comments'
 import { useUser } from '@clerk/clerk-react'
 import { useMutation } from '@tanstack/react-query'
 import Protected from '../Protected'
+import URL from '../../utils/URL'
 
 const Post = (props) => {
 
@@ -23,18 +24,17 @@ const Post = (props) => {
     if (isSignedIn && !isLiked) {
       mutate({
         currPostId:props.id,
-        email: user?.primaryEmailAddress?.emailAddress,
+        email: user.primaryEmailAddress.emailAddress,
         postId: [...props.liked, props.id],
         likes: props.likes,
       })
     }
   }
 
-
   return (
     <div className='w-80 m-5 outline select-none outline-2 bg-white outline-gray-200 hover:outline-gray-300 transition-all rounded-xl'>
       {postId && <Comments setId={setPostId} id={postId} />}
-      <img src={props.thumbnail} className="rounded-t-xl aspect-video" alt="Post-Thumbnail" />
+      <img src={`${URL}/${props.thumbnail}`} className="rounded-t-xl aspect-video" alt="Post-Thumbnail" />
       <div className="p-5">
         <h3 className="text-gray-800 font-bold text-center">{props.caption}</h3>
         <h6 className="text-gray-400 text-sm text-center mt-1">Posted By {props.creator}</h6>
@@ -42,7 +42,7 @@ const Post = (props) => {
         <div className="flex justify-center items-center mt-3 space-x-10">
           <Protected>
             <i onClick={handleLike} className={`bi cursor-pointer bi-heart-fill text-xl not-italic ${isLiked?"text-purple-500":"text-gray-400"}`}>
-              <span className="ml-1 text-lg">{props.likes}</span>
+              <span className="ml-1 text-lg font-bold">{props.likes}</span>
             </i>
           </Protected>
           <i onClick={() => setPostId(props.id)}
