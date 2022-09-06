@@ -1,1 +1,1 @@
-export default "http://localhost:4000"
+export default import.meta.env.VITE_BACKEND_URL

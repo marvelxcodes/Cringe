@@ -1,7 +1,7 @@
 module.exports = [
     {
         name: 'server',
-        entry: 'index.js',
+        entry: './index.js',
         target: 'node',
         output: {
             path: __dirname + '/dist',
@@ -13,16 +13,6 @@ module.exports = [
             ],
             extensions: [".js"]
         },
-        mode: 'production',
-        module: {
-            loaders: [
-                {
-                    test: /app\/.*\.js?$/,
-                    loaders: [
-                        'babel-loader'
-                    ]
-                }
-            ]
-        }
+        mode: 'production'
     }
 ]
