@@ -6,7 +6,6 @@ import Posts from './routes/posts.js';
 import Comments from './routes/comments.js';
 import Likes from './routes/likes.js'
 
-
 const App = express();
 const PORT = process.env.PORT || 4000;
 
