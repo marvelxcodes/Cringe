@@ -5,7 +5,7 @@ import bodyparser from 'body-parser'
 import Posts from './routes/posts.js';
 import Comments from './routes/comments.js';
 import Likes from './routes/likes.js'
-import Upload from './controllers/upload.js';
+
 
 const App = express();
 const PORT = process.env.PORT || 4000;
@@ -27,10 +27,7 @@ App.use(bodyparser.urlencoded({
 App.use("/posts", Posts)
 App.use("/comments", Comments)
 App.use("/likes", Likes)
-App.use("/upload", Upload().single('image'), (req, res) => {
-    console.log(req.file)
-    res.json({})
-})
+
 
 App.listen(PORT, () => {
     console.log(`Server is Listening on Port: ${PORT}!`)

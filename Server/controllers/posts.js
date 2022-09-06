@@ -1,6 +1,4 @@
 import prisma from '../prisma/index.js'
-import upload from './upload.js'
-import { v4 as uuid } from 'uuid'
 
 export const getPosts = async (req, res) => {
     try {
@@ -32,18 +30,10 @@ export const getTrending = async (req, res) => {
 }
 
 export const createPost = async (req, res) => {
-    const { caption, creator, tags, form } = req.body
-    const imageName = uuid()
     try {
         const res = await prisma.post.create({
-            data: {
-                caption,
-                creator,
-                thumbnail: imageName,
-                tags
-            }
+            data: req.body
         })
-        console.log(form, res)
         res.status(200).json({ status: "Success!" })
     } catch (err) {
         res.send(err)

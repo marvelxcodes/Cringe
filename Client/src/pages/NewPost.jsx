@@ -4,6 +4,9 @@ import TagsInput from "../components/Elements/TagsInput"
 import { useUser } from "@clerk/clerk-react"
 import Protected from "../components/Protected"
 import { createPost } from '../fetchers/posts'
+import { v4 as uuid } from 'uuid'
+import axios from "axios"
+import URL from "../utils/URL"
 
 const NewPost = () => {
 
@@ -15,12 +18,14 @@ const NewPost = () => {
   const { user } = useUser()
 
   const createHandler = async () => {
+    const imageName = `${uuid().toString()}.${thumbnail.name.substring(thumbnail.name.lastIndexOf('.') + 1)}`
     const form = new FormData()
-    form.append('image', thumbnail)
+    form.append('image', thumbnail, imageName)
+    await axios.post(URL+"/posts/upload", form)
     await createPost({
       caption: captionRef?.current?.value,
       creator: user?.fullName,
-      tags, form
+      tags, thumbnail: imageName
     }).then(() => {
       setTags([])
       captionRef.current.value = ""
