@@ -1,18 +1,23 @@
 module.exports = [
-    {
-        name: 'server',
-        entry: './index.js',
-        target: 'node',
-        output: {
-            path: __dirname + '/dist',
-            filename: 'index.js',
-        },
-        resolve: {
-            modules: [
-            "node_modules"
-            ],
-            extensions: [".js"]
-        },
-        mode: 'production'
-    }
+  {
+    name: 'server',
+    entry: './index.js',
+    target: 'node',
+    output: {
+      path: __dirname + '/dist',
+      filename: 'index.cjs',
+    },
+    module: {
+      rules: [
+        {
+          test: /\.js$/,
+          exclude: /node_modules/,
+          use: {
+            loader: "babel-loader"
+          }
+        }
+      ]
+    },
+    mode: 'production'
+  }
 ]
