@@ -3,6 +3,7 @@ import { useEffect } from 'react'
 import Post from '../components/Posts/Post'
 import { getLiked } from '../fetchers/liked'
 import { getTrending } from '../fetchers/posts'
+import Protected from '../components/Protected'
 
 const Trending = () => {
 
@@ -23,17 +24,19 @@ const Trending = () => {
   }, [user])
   
   return (
-    <div className="w-full flex p-5 justify-center flex-wrap">
-      {posts && posts.map((post) => (
-        <Post
-          key={post.id}
-          liked={liked?.postId}
-          email={email}
-          refetch={fetchAll}
-          {...post}
-        />
-      ))}
-    </div>
+    <Protected>
+      <div className="w-full flex p-5 justify-center flex-wrap">
+        {posts && posts.map((post) => (
+          <Post
+            key={post.id}
+            liked={liked?.postId}
+            email={email}
+            refetch={fetchAll}
+            {...post}
+          />
+        ))}
+      </div>
+    </Protected>
   )
 }
 export default Trending
