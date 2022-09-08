@@ -4,8 +4,8 @@ import { useState } from 'react'
 import Comments from './Comments'
 import { useUser } from '@clerk/clerk-react'
 import { useMutation } from '@tanstack/react-query'
-import Protected from '../Protected'
 import URL from '../../utils/URL'
+import { useEffect } from 'react'
 
 const Post = (props) => {
   // Shows Comment Box if has {blogId}
@@ -13,11 +13,22 @@ const Post = (props) => {
   const { user, isSignedIn } = useUser()
 
   const isLiked = props.liked?.includes(props.id)
+  
+  const [ currLikeState, setCurrLikeState ] = useState(false)
   const { mutate } = useMutation(appendLike, {
     onSuccess: () => {
       props.refetch()
     }
   })
+  const [isInit, setIsInit] = useState(true)
+  useEffect(() => {
+    setIsInit(false)
+    if (isInit) {
+      setCurrLikeState(isLiked)
+    } else {
+      handleLike()
+    }
+  }, [currLikeState])
 
   const handleLike = () => {
     if (isSignedIn && !isLiked) {
@@ -39,11 +50,9 @@ const Post = (props) => {
         <h6 className="text-gray-400 text-sm text-center mt-1">Posted By {props.creator}</h6>
         <h6 className="text-gray-400 text-sm text-center mt-1">• {moment(props.createdAt).fromNow()}</h6>
         <div className="flex justify-center items-center mt-3 space-x-10">
-          <Protected>
-            <i onClick={handleLike} className={`bi cursor-pointer bi-heart-fill text-xl not-italic ${isLiked?"text-purple-500":"text-gray-400"}`}>
-              <span className="ml-1 text-lg font-bold">{props.likes}</span>
-            </i>
-          </Protected>
+          <i onClick={() => setCurrLikeState(true)} className={`bi cursor-pointer bi-heart-fill text-xl not-italic ${currLikeState?"text-purple-500":"text-gray-400"}`}>
+            <span className="ml-1 text-lg font-bold">{props.likes}</span>
+          </i>
           <i onClick={() => setPostId(props.id)}
              className="bi text-gray-400 cursor-pointer bi-chat-heart-fill text-xl not-italic">
              <span className="ml-1 text-lg font-bold">{props._count.Comment}</span>

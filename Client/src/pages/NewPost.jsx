@@ -7,6 +7,7 @@ import { createPost } from '../fetchers/posts'
 import { v4 as uuid } from 'uuid'
 import axios from "axios"
 import URL from "../utils/URL"
+import Alert from '../components/Alerts/Alert'
 
 const NewPost = () => {
 
