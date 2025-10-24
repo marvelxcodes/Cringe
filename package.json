@@ -2,9 +2,11 @@
 	"name": "cringe",
 	"private": true,
 	"workspaces": [
-		"apps/*"
+		"apps/*",
+		"packages/*"
 	],
 	"scripts": {
+		"scrape": "turbo run start --filter=scrapper",
 		"build": "turbo run build",
 		"dev": "turbo run dev",
 		"lint": "turbo run lint",
@@ -14,7 +16,12 @@
 	"devDependencies": {
 		"@biomejs/biome": "^1.9.4",
 		"@turbo/gen": "^1.9.7",
+		"dotenv": "^17.2.3",
 		"turbo": "latest"
 	},
-	"packageManager": "bun@1.1.34"
+	"packageManager": "bun@1.1.34",
+	"dependencies": {
+		"@types/puppeteer": "^7.0.4",
+		"puppeteer": "^24.26.1"
+	}
 }

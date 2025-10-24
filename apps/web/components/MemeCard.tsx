@@ -1,6 +1,6 @@
 'use client';
 
-import type { MemeCardProps } from '@/types';
+import type { MemeCardProps } from 'types';
 import Card from './ui/card';
 import Badge from './ui/badge';
 

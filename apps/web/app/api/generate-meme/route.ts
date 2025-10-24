@@ -1,7 +1,7 @@
 import type { NextRequest } from 'next/server';
 import { NextResponse } from 'next/server';
 import { GoogleGenerativeAI } from '@google/generative-ai';
-import type { GenerateMemeRequest } from '@/types';
+import type { GenerateMemeRequest } from 'types';
 
 const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY!);
 
@@ -73,6 +73,10 @@ export async function POST(request: NextRequest) {
     // Use Gemini to generate the meme
     const model = genAI.getGenerativeModel({ model: 'gemini-1.5-flash' });
 
+    const systemPrompt = `You are a meme generator. Based on this template image and the following prompt, generate a witty, funny meme caption or text that fits the image perfectly. The prompt is: "${prompt}". 
+
+Return ONLY the meme text/caption without any explanations or additional context. Make it punchy, relatable, and internet-culture appropriate.`;
+
     const result = await model.generateContent([
       {
         inlineData: {
@@ -80,9 +84,7 @@ export async function POST(request: NextRequest) {
           data: base64Image,
         },
       },
-      `You are a meme generator. Based on this template image and the following prompt, generate a witty, funny meme caption or text that fits the image perfectly. The prompt is: "${prompt}". 
-
-Return ONLY the meme text/caption without any explanations or additional context. Make it punchy, relatable, and internet-culture appropriate.`,
+      systemPrompt,
     ]);
 
     const response = await result.response;

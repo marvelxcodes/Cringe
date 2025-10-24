@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { saveMeme } from '@/lib/supabase/memes';
+import { saveMeme } from 'database';
 
 export async function POST(request: NextRequest) {
   try {

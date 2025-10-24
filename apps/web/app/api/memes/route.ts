@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { getMemes } from '@/lib/supabase/memes';
+import { getMemes } from 'database';
 
 export async function GET(request: NextRequest) {
   try {

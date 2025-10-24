@@ -5,7 +5,7 @@ import { useRouter } from 'next/navigation';
 import Navigation from '@/components/Navigation';
 import MemeCard from '@/components/MemeCard';
 import Button from '@/components/ui/button';
-import type { Meme } from '@/types';
+import type { Meme } from 'types';
 
 export default function GalleryPage() {
   const router = useRouter();

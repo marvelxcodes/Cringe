@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useCallback } from 'react';
 import { useRouter } from 'next/navigation';
 import Navigation from '@/components/Navigation';
 import TemplateGrid from '@/components/TemplateGrid';
@@ -9,24 +9,68 @@ import type { Template } from '@/types';
 export default function Page() {
   const router = useRouter();
   const [templates, setTemplates] = useState<Template[]>([]);
-  const [loading, setLoading] = useState(true);
+  const [page, setPage] = useState(1);
+  const [hasMore, setHasMore] = useState(true);
+  const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [selectedCategory, setSelectedCategory] = useState<string | undefined>();
 
   const categories = ['all', 'funny', 'wholesome', 'dank', 'trending', 'custom'];
 
+  // Initial load
   useEffect(() => {
-    fetchTemplates();
-  }, []);
-
-  const fetchTemplates = async () => {
-    try {
+    const loadInitialTemplates = async () => {
       setLoading(true);
-      const response = await fetch('/api/templates');
+      setError(null);
       
-      if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`);
+      try {
+        let url = '/api/templates?page=1&limit=10';
+        if (selectedCategory && selectedCategory !== 'all') {
+          url += `&category=${selectedCategory}`;
+        }
+        
+        const response = await fetch(url);
+        
+        const contentType = response.headers.get('content-type');
+        if (!contentType || !contentType.includes('application/json')) {
+          throw new Error('Response is not JSON');
+        }
+        
+        const data = await response.json();
+
+        if (data.success) {
+          setTemplates(data.templates);
+          setPage(2);
+          setHasMore(data.templates.length > 0);
+        } else {
+          setError(data.error || 'Failed to fetch templates');
+        }
+      } catch (err) {
+        setError('An error occurred while fetching templates');
+        console.error(err);
+      } finally {
+        setLoading(false);
       }
+    };
+
+    loadInitialTemplates();
+  }, [selectedCategory]);
+
+  // Load more templates function
+  const loadMoreTemplates = async () => {
+    if (loading || !hasMore) return;
+    
+    console.log('Loading more templates, current page:', page, 'current templates count:', templates.length);
+    setLoading(true);
+    
+    try {
+      let url = `/api/templates?page=${page}&limit=10`;
+      if (selectedCategory && selectedCategory !== 'all') {
+        url += `&category=${selectedCategory}`;
+      }
+      
+      console.log('Fetching URL:', url);
+      const response = await fetch(url);
       
       const contentType = response.headers.get('content-type');
       if (!contentType || !contentType.includes('application/json')) {
@@ -34,9 +78,17 @@ export default function Page() {
       }
       
       const data = await response.json();
+      console.log('Received data:', data);
 
       if (data.success) {
-        setTemplates(data.templates);
+        console.log('Before update - existing templates:', templates.length, 'new templates:', data.templates.length);
+        setTemplates(prev => {
+          const newTemplates = [...prev, ...data.templates];
+          console.log('After update - total templates:', newTemplates.length);
+          return newTemplates;
+        });
+        setPage(prev => prev + 1);
+        setHasMore(data.templates.length > 0);
       } else {
         setError(data.error || 'Failed to fetch templates');
       }
@@ -47,6 +99,42 @@ export default function Page() {
       setLoading(false);
     }
   };
+
+  const fetchTemplates = useCallback(async () => {
+    setLoading(true);
+    setError(null);
+    
+    try {
+      let url = '/api/templates?page=1&limit=10';
+      if (selectedCategory && selectedCategory !== 'all') {
+        url += `&category=${selectedCategory}`;
+      }
+      
+      const response = await fetch(url);
+      
+      const contentType = response.headers.get('content-type');
+      if (!contentType || !contentType.includes('application/json')) {
+        throw new Error('Response is not JSON');
+      }
+      
+      const data = await response.json();
+
+      if (data.success) {
+        setTemplates(data.templates);
+        setPage(2);
+        setHasMore(data.templates.length > 0);
+      } else {
+        setError(data.error || 'Failed to fetch templates');
+      }
+    } catch (err) {
+      setError('An error occurred while fetching templates');
+      console.error(err);
+    } finally {
+      setLoading(false);
+    }
+  }, [selectedCategory]);
+
+
 
   const handleSelectTemplate = (template: Template) => {
     sessionStorage.setItem('selectedTemplate', JSON.stringify(template));
@@ -136,7 +224,7 @@ export default function Page() {
             </p>
           </div>
 
-          {/* Category Filter - Untitled UI Badge Style */}
+          {/* Category Filters - Untitled UI Style */}
           <div className="flex flex-wrap gap-2 justify-center mb-10 sm:mb-12">
             {categories.map((category) => (
               <button
@@ -177,7 +265,7 @@ export default function Page() {
               <p className="text-error-600 dark:text-error-400 text-base font-medium mb-6">{error}</p>
               <button
                 type="button"
-                onClick={fetchTemplates}
+                onClick={() => fetchTemplates()}
                 className="px-5 py-2.5 rounded-lg text-sm font-semibold bg-brand-600 text-white hover:bg-brand-700 transition-all duration-200 shadow-sm"
               >
                 Try Again
@@ -186,13 +274,45 @@ export default function Page() {
           )}
 
           {/* Templates Grid */}
-          {!loading && !error && (
+          {!error && templates.length > 0 && (
             <div className="animate-fadeIn">
               <TemplateGrid
                 templates={templates}
                 onSelectTemplate={handleSelectTemplate}
                 selectedCategory={selectedCategory}
               />
+
+              {/* Load More Button */}
+              <div className="text-center py-10">
+                {hasMore && !loading && (
+                  <button
+                    type="button"
+                    onClick={loadMoreTemplates}
+                    className="px-6 py-3 rounded-lg text-sm font-semibold bg-brand-600 text-white hover:bg-brand-700 transition-all duration-200 shadow-sm hover:shadow-md"
+                  >
+                    Load More Templates
+                  </button>
+                )}
+
+                {loading && templates.length > 0 && (
+                  <div className="flex flex-col items-center">
+                    <div className="w-8 h-8 border-4 border-brand-500 border-t-transparent rounded-full animate-spin" />
+                    <p className="mt-2 text-gray-500 dark:text-gray-400">Loading more templates...</p>
+                  </div>
+                )}
+
+                {!loading && !hasMore && (
+                  <p className="text-gray-500 dark:text-gray-400">You've reached the end!</p>
+                )}
+              </div>
+            </div>
+          )}
+
+          {/* Initial Loading State */}
+          {loading && templates.length === 0 && !error && (
+            <div className="text-center py-20">
+              <div className="w-8 h-8 border-4 border-brand-500 border-t-transparent rounded-full animate-spin mx-auto" />
+              <p className="mt-2 text-gray-500 dark:text-gray-400">Loading templates...</p>
             </div>
           )}
         </div>

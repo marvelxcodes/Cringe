@@ -1,5 +1,5 @@
 import { supabase } from './client';
-import type { Meme } from '@/types';
+import type { Meme } from 'types';
 
 /**
  * Save a generated meme to Supabase

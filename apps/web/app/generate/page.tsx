@@ -5,7 +5,7 @@ import { useRouter } from 'next/navigation';
 import Navigation from '@/components/Navigation';
 import FabricEditor from '@/components/FabricEditor';
 import PromptInput from '@/components/PromptInput';
-import type { Template } from '@/types';
+import type { Template } from 'types';
 
 export default function GeneratePage() {
   const router = useRouter();

@@ -1,7 +1,7 @@
 'use client';
 
 import { useState } from 'react';
-import type { Template, TemplateGridProps } from '@/types';
+import type { Template, TemplateGridProps } from 'types';
 import Card from './ui/card';
 import Badge from './ui/badge';
 import Button from './ui/button';

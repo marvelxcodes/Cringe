@@ -1,5 +1,6 @@
-import { NextRequest, NextResponse } from 'next/server';
-import { getTemplates } from '@/lib/supabase/templates';
+import type { NextRequest } from 'next/server';
+import { NextResponse } from 'next/server';
+import { getTemplates } from 'database';
 
 // Mock data for development when Supabase is not configured
 const MOCK_TEMPLATES = [
@@ -62,10 +63,14 @@ const MOCK_TEMPLATES = [
 ];
 
 export async function GET(request: NextRequest) {
+  const { searchParams } = new URL(request.url);
+  const page = Number.parseInt(searchParams.get('page') || '1', 10);
+  const limit = Number.parseInt(searchParams.get('limit') || '10', 10);
+
   try {
     // Try to get templates from Supabase
     try {
-      const templates = await getTemplates();
+      const templates = await getTemplates(page, limit);
       return NextResponse.json({
         success: true,
         templates,
@@ -73,9 +78,14 @@ export async function GET(request: NextRequest) {
     } catch (supabaseError) {
       // If Supabase fails, return mock data for development
       console.warn('Supabase not configured, using mock data:', supabaseError);
+      // Simple pagination for mock data
+      const start = (page - 1) * limit;
+      const end = start + limit;
+      const paginatedMock = MOCK_TEMPLATES.slice(start, end);
+
       return NextResponse.json({
         success: true,
-        templates: MOCK_TEMPLATES,
+        templates: paginatedMock,
       });
     }
   } catch (error) {
