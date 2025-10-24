@@ -2,7 +2,7 @@
 
 import { useRouter, usePathname } from 'next/navigation';
 import Button from './ui/button';
-import ThemeToggle from './ThemeToggle';
+import Image from 'next/image';
 
 export default function Navigation() {
   const router = useRouter();
@@ -24,7 +24,7 @@ export default function Navigation() {
             type="button"
           >
             <div className="w-9 h-9 rounded-lg bg-gradient-to-br from-brand-500 to-brand-700 flex items-center justify-center shadow-sm group-hover:shadow-md group-hover:scale-105 transition-all duration-200">
-              <span className="text-xl">😂</span>
+              <Image src="/logo.png" alt="MemeForge Logo" width={36} height={36} />
             </div>
             <span className="text-xl font-semibold text-gray-900 dark:text-white tracking-tight">
               MemeForge
@@ -49,7 +49,6 @@ export default function Navigation() {
                 {item.name}
               </button>
             ))}
-            <ThemeToggle />
             <Button
               onPress={() => router.push('/generate')}
               variant="primary"

@@ -1,81 +1,150 @@
-# Turborepo starter
+# AI Meme Generator 🎨✨
 
-This is an official starter Turborepo.
+A full-stack, AI-powered meme generator built with Next.js 15, Fabric.js, Supabase, and Google's Gemini AI.
 
-## Using this example
+## 🚀 Features
 
-Run the following command:
+- **AI-Powered Generation**: Use Google's Gemini AI to generate witty meme captions
+- **Interactive Editor**: Full-featured Fabric.js canvas editor with:
+  - Text manipulation (add, edit, move, resize, rotate)
+  - Undo/Redo functionality
+  - Keyboard shortcuts
+  - Real-time preview
+- **Template Library**: Browse and filter meme templates by category
+- **Cloud Storage**: Save and manage your memes with Supabase
+- **Modern UI**: Beautiful glassy UI with smooth animations
+- **TypeScript**: Fully typed for better developer experience
 
-```sh
-npx create-turbo@latest
+## 🛠️ Tech Stack
+
+- **Frontend**: Next.js 15 (App Router), React 19, TypeScript
+- **Styling**: Tailwind CSS v4 (CSS-first configuration)
+- **Canvas Editor**: Fabric.js
+- **AI**: Google Gemini API
+- **Backend**: Supabase (Database + Storage)
+- **Package Manager**: Bun
+
+## 📋 Prerequisites
+
+Before you begin, ensure you have:
+
+- Node.js 18+ or Bun installed
+- A Supabase account and project
+- A Google AI Studio API key (for Gemini)
+
+## 🔧 Quick Start
+
+### 1. Install Dependencies
+
+```bash
+# From the monorepo root
+bun install
 ```
 
-## What's inside?
+### 2. Set Up Environment Variables
 
-This Turborepo includes the following packages/apps:
+Copy `.env.example` to `.env.local` and fill in your credentials:
 
-### Apps and Packages
-
-- `docs`: a [Next.js](https://nextjs.org/) app
-- `web`: another [Next.js](https://nextjs.org/) app
-- `ui`: a stub React component library shared by both `web` and `docs` applications
-- `eslint-config-custom`: `eslint` configurations (includes `eslint-config-next` and `eslint-config-prettier`)
-- `tsconfig`: `tsconfig.json`s used throughout the monorepo
-
-Each package/app is 100% [TypeScript](https://www.typescriptlang.org/).
-
-### Utilities
-
-This Turborepo has some additional tools already setup for you:
-
-- [TypeScript](https://www.typescriptlang.org/) for static type checking
-- [ESLint](https://eslint.org/) for code linting
-- [Prettier](https://prettier.io) for code formatting
-
-### Build
-
-To build all apps and packages, run the following command:
-
-```
-cd my-turborepo
-pnpm build
+```bash
+cp .env.example .env.local
 ```
 
-### Develop
+Required variables:
+- `NEXT_PUBLIC_SUPABASE_URL` - Your Supabase project URL
+- `NEXT_PUBLIC_SUPABASE_ANON_KEY` - Your Supabase anonymous key
+- `GEMINI_API_KEY` - Your Google Gemini API key
 
-To develop all apps and packages, run the following command:
+### 3. Set Up Database
 
-```
-cd my-turborepo
-pnpm dev
-```
+Follow the instructions in [`/docs/DATABASE_SETUP.md`](/docs/DATABASE_SETUP.md) to:
+- Create Supabase tables
+- Set up storage bucket
+- Seed sample templates
 
-### Remote Caching
+### 4. Run the Development Server
 
-Turborepo can use a technique known as [Remote Caching](https://turbo.build/repo/docs/core-concepts/remote-caching) to share cache artifacts across machines, enabling you to share build caches with your team and CI/CD pipelines.
+```bash
+# From the monorepo root
+bun run dev --filter=web
 
-By default, Turborepo will cache locally. To enable Remote Caching you will need an account with Vercel. If you don't have an account you can [create one](https://vercel.com/signup), then enter the following commands:
-
-```
-cd my-turborepo
-npx turbo login
-```
-
-This will authenticate the Turborepo CLI with your [Vercel account](https://vercel.com/docs/concepts/personal-accounts/overview).
-
-Next, you can link your Turborepo to your Remote Cache by running the following command from the root of your Turborepo:
-
-```
-npx turbo link
+# The app will be available at http://localhost:3000
 ```
 
-## Useful Links
+## 📖 Documentation
 
-Learn more about the power of Turborepo:
+- **[Database Setup Guide](../../docs/DATABASE_SETUP.md)** - Complete Supabase setup instructions
+- **[Tailwind v4 Setup](../../docs/TAILWIND_V4_SETUP.md)** - Tailwind CSS v4 configuration details
+- **[Project Context](../../docs/CONTEXT.md)** - Original project specification
 
-- [Tasks](https://turbo.build/repo/docs/core-concepts/monorepos/running-tasks)
-- [Caching](https://turbo.build/repo/docs/core-concepts/caching)
-- [Remote Caching](https://turbo.build/repo/docs/core-concepts/remote-caching)
-- [Filtering](https://turbo.build/repo/docs/core-concepts/monorepos/filtering)
-- [Configuration Options](https://turbo.build/repo/docs/reference/configuration)
-- [CLI Usage](https://turbo.build/repo/docs/reference/command-line-reference)
+## 🎯 Usage
+
+1. **Select a Template**: Browse the home page and click on a meme template
+2. **Enter a Prompt**: Describe your meme idea (e.g., "Make this about Monday mornings")
+3. **AI Generation**: Gemini will suggest meme text
+4. **Edit in Canvas**: Use the Fabric.js editor to customize
+5. **Save or Download**: Save to Supabase or download locally
+
+### Editor Shortcuts
+
+- **Add Text**: Click "Add Text" button
+- **Undo**: `Ctrl/Cmd + Z`
+- **Redo**: `Ctrl/Cmd + Y`
+- **Delete**: `Delete` or `Backspace` key
+- **Edit Text**: Double-click text objects
+
+## 📁 Project Structure
+
+```
+apps/web/
+├── app/
+│   ├── api/              # API routes (Gemini & Supabase)
+│   ├── generate/         # Meme generation page
+│   ├── gallery/          # Saved memes gallery
+│   └── page.tsx          # Home page (templates)
+├── components/           # React components
+├── lib/                  # Utilities and helpers
+├── types/               # TypeScript type definitions
+└── README.md
+```
+
+## 🔌 API Endpoints
+
+- `GET /api/templates` - Fetch all meme templates
+- `POST /api/generate-meme` - Generate meme text with AI
+- `POST /api/save-meme` - Save meme to Supabase
+- `GET /api/memes` - Fetch all saved memes
+
+## 🐛 Troubleshooting
+
+### Server Won't Start
+
+```bash
+# Clear Next.js cache
+rm -rf .next
+
+# Reinstall dependencies
+bun install
+```
+
+### Tailwind Styles Not Working
+
+See [Tailwind v4 Setup Guide](../../docs/TAILWIND_V4_SETUP.md) for configuration details.
+
+### Supabase Connection Issues
+
+- Verify environment variables are set correctly
+- Check Supabase RLS policies allow access
+- Ensure storage bucket is public
+
+## 🤝 Contributing
+
+Contributions are welcome! Please feel free to submit a Pull Request.
+
+## 📝 License
+
+This project is open source and available under the MIT License.
+
+---
+
+Built with ❤️ using Next.js, Fabric.js, Supabase, and Gemini AI
+

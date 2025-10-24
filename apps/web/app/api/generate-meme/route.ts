@@ -1,8 +1,33 @@
-import { NextRequest, NextResponse } from 'next/server';
+import type { NextRequest } from 'next/server';
+import { NextResponse } from 'next/server';
 import { GoogleGenerativeAI } from '@google/generative-ai';
 import type { GenerateMemeRequest } from '@/types';
 
 const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY!);
+
+// Helper function to detect MIME type from URL or content
+function detectMimeType(url: string, contentType?: string | null): string {
+  if (contentType) {
+    return contentType;
+  }
+  
+  const urlLower = url.toLowerCase();
+  if (urlLower.includes('.jpg') || urlLower.includes('.jpeg')) {
+    return 'image/jpeg';
+  }
+  if (urlLower.includes('.png')) {
+    return 'image/png';
+  }
+  if (urlLower.includes('.gif')) {
+    return 'image/gif';
+  }
+  if (urlLower.includes('.webp')) {
+    return 'image/webp';
+  }
+  
+  // Default to jpeg for imgflip and similar meme sites
+  return 'image/jpeg';
+}
 
 export async function POST(request: NextRequest) {
   try {
@@ -19,14 +44,31 @@ export async function POST(request: NextRequest) {
       );
     }
 
+    // Validate Gemini API key
+    if (!process.env.GEMINI_API_KEY) {
+      console.error('GEMINI_API_KEY is not configured');
+      return NextResponse.json(
+        {
+          success: false,
+          error: 'API configuration error. Please check server setup.',
+        },
+        { status: 500 }
+      );
+    }
+
     // Fetch the template image
     const imageResponse = await fetch(templateUrl);
     if (!imageResponse.ok) {
-      throw new Error('Failed to fetch template image');
+      console.error(`Failed to fetch template image: ${imageResponse.status} ${imageResponse.statusText}`);
+      throw new Error(`Failed to fetch template image: ${imageResponse.status}`);
     }
 
     const imageBuffer = await imageResponse.arrayBuffer();
     const base64Image = Buffer.from(imageBuffer).toString('base64');
+    
+    // Detect the correct MIME type
+    const mimeType = detectMimeType(templateUrl, imageResponse.headers.get('content-type'));
+    console.log(`Using MIME type: ${mimeType} for URL: ${templateUrl}`);
 
     // Use Gemini to generate the meme
     const model = genAI.getGenerativeModel({ model: 'gemini-1.5-flash' });
@@ -34,7 +76,7 @@ export async function POST(request: NextRequest) {
     const result = await model.generateContent([
       {
         inlineData: {
-          mimeType: 'image/png',
+          mimeType,
           data: base64Image,
         },
       },
@@ -46,6 +88,12 @@ Return ONLY the meme text/caption without any explanations or additional context
     const response = await result.response;
     const generatedText = response.text();
 
+    if (!generatedText) {
+      throw new Error('No text generated from AI model');
+    }
+
+    console.log(`Successfully generated meme text: ${generatedText.substring(0, 50)}...`);
+
     // For now, return the generated text and the original image URL
     // In a production app, you might want to overlay the text on the image server-side
     return NextResponse.json({
@@ -55,10 +103,26 @@ Return ONLY the meme text/caption without any explanations or additional context
     });
   } catch (error) {
     console.error('Error in generate-meme API:', error);
+    
+    // Provide more specific error messages
+    let errorMessage = 'Failed to generate meme';
+    if (error instanceof Error) {
+      errorMessage = error.message;
+      
+      // Check for specific error types
+      if (error.message.includes('API key')) {
+        errorMessage = 'Invalid or missing Gemini API key';
+      } else if (error.message.includes('fetch')) {
+        errorMessage = 'Failed to fetch template image. Please check the URL.';
+      } else if (error.message.includes('quota')) {
+        errorMessage = 'API quota exceeded. Please try again later.';
+      }
+    }
+    
     return NextResponse.json(
       {
         success: false,
-        error: error instanceof Error ? error.message : 'Failed to generate meme',
+        error: errorMessage,
       },
       { status: 500 }
     );
