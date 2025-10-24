@@ -1,25 +1,24 @@
 {
-  "name": "scrapper",
-  "version": "0.1.0",
-  "description": "meme scrapper for cringe",
-  "main": "./src/index.ts",
-  "scripts": {
-    "build": "tsup src/index.ts --format cjs",
-    "clean": "rm -rf .turbo && rm -rf node_modules && rm -rf dist",
-    "dev": "tsup src/index.ts --format cjs --watch --onSuccess \"node dist/index.js\"",
-    "lint": "tsc --noEmit && eslint \"src/**/*.ts*\"",
-    "start": "node dist/index.js"
-  },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
-  "dependencies": {
-    "puppeteer": "^20.8.0"
-  },
-  "devDependencies": {
-    "tsconfig": "workspace:*",
-    "@types/node": "^17.0.12",
-    "tsup": "^7.1.0",
-    "typescript": "^5.1.6"
-  }
+	"name": "scrapper",
+	"version": "0.1.0",
+	"description": "meme scrapper for cringe",
+	"main": "./src/index.ts",
+	"scripts": {
+		"build": "tsup src/index.ts --format cjs",
+		"clean": "rm -rf .turbo && rm -rf node_modules && rm -rf dist",
+		"dev": "tsup src/index.ts --format cjs --watch --onSuccess \"node dist/index.js\"",
+		"lint": "biome check .",
+		"start": "node dist/index.js"
+	},
+	"keywords": [],
+	"author": "",
+	"license": "ISC",
+	"dependencies": {
+		"puppeteer": "^23.5.3"
+	},
+	"devDependencies": {
+		"@types/node": "^22.8.1",
+		"tsup": "^8.3.5",
+		"typescript": "^5.6.3"
+	}
 }

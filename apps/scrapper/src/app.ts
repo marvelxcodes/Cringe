@@ -1,7 +1,5 @@
 import puppeteer from 'puppeteer';
 
-function main() {
-   
-}
+function main() {}
 
 export default main;

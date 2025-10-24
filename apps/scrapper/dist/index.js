@@ -1,4 +1,3 @@
-"use strict";
 var __defProp = Object.defineProperty;
 var __getOwnPropDesc = Object.getOwnPropertyDescriptor;
 var __getOwnPropNames = Object.getOwnPropertyNames;
@@ -18,11 +17,11 @@ var __copyProps = (to, from, except, desc) => {
 var __toCommonJS = (mod) => __copyProps(__defProp({}, "__esModule", { value: true }), mod);
 
 // src/index.ts
-var src_exports = {};
-__export(src_exports, {
-  default: () => src_default
+var index_exports = {};
+__export(index_exports, {
+  default: () => index_default
 });
-module.exports = __toCommonJS(src_exports);
+module.exports = __toCommonJS(index_exports);
 
 // src/app.ts
 function main() {
@@ -31,4 +30,4 @@ var app_default = main;
 
 // src/index.ts
 app_default();
-var src_default = app_default;
+var index_default = app_default;
