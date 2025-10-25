@@ -1,17 +1,35 @@
 {
 	"$schema": "https://turbo.build/schema.json",
 	"globalDependencies": ["**/.env.*local"],
+	"globalEnv": [
+		"GEMINI_API_KEY",
+		"NEXT_PUBLIC_SUPABASE_URL",
+		"NEXT_PUBLIC_SUPABASE_ANON_KEY",
+		"SUPABASE_SERVICE_ROLE_KEY"
+	],
 	"tasks": {
 		"build": {
 			"dependsOn": ["^build"],
-			"outputs": [".next/**", "!.next/cache/**"]
+			"outputs": [".next/**", "!.next/cache/**"],
+			"env": [
+				"GEMINI_API_KEY",
+				"NEXT_PUBLIC_SUPABASE_URL",
+				"NEXT_PUBLIC_SUPABASE_ANON_KEY",
+				"SUPABASE_SERVICE_ROLE_KEY"
+			]
 		},
 		"lint": {
 			"outputs": []
 		},
 		"dev": {
 			"cache": false,
-			"persistent": true
+			"persistent": true,
+			"env": [
+				"GEMINI_API_KEY",
+				"NEXT_PUBLIC_SUPABASE_URL",
+				"NEXT_PUBLIC_SUPABASE_ANON_KEY",
+				"SUPABASE_SERVICE_ROLE_KEY"
+			]
 		},
 		"start": {
 			"dependsOn": ["^build"],

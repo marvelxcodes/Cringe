@@ -1,8 +1,10 @@
-import { NextRequest, NextResponse } from 'next/server';
-import { getMemes } from 'database';
+import type { NextRequest } from 'next/server';
+import { NextResponse } from 'next/server';
 
 export async function GET(request: NextRequest) {
   try {
+    // Dynamic import to avoid build-time issues with database connection
+    const { getMemes } = await import('database');
     const memes = await getMemes();
 
     return NextResponse.json({

@@ -71,7 +71,9 @@ export async function POST(request: NextRequest) {
     console.log(`Using MIME type: ${mimeType} for URL: ${templateUrl}`);
 
     // Use Gemini to generate the meme
+    // Use gemini-1.5-flash which is widely available for vision tasks
     const model = genAI.getGenerativeModel({ model: 'gemini-1.5-flash' });
+    console.log('Using model: gemini-1.5-flash');
 
     const systemPrompt = `You are a meme generator. Based on this template image and the following prompt, generate a witty, funny meme caption or text that fits the image perfectly. The prompt is: "${prompt}". 
 
@@ -108,16 +110,27 @@ Return ONLY the meme text/caption without any explanations or additional context
     
     // Provide more specific error messages
     let errorMessage = 'Failed to generate meme';
+    let statusCode = 500;
+    
     if (error instanceof Error) {
       errorMessage = error.message;
       
-      // Check for specific error types
+      // Check for specific Google AI API error types
       if (error.message.includes('API key')) {
         errorMessage = 'Invalid or missing Gemini API key';
+        statusCode = 401;
+      } else if (error.message.includes('not found') || error.message.includes('404')) {
+        errorMessage = 'Gemini model not available. This might be a temporary issue with the AI service.';
+        statusCode = 503;
       } else if (error.message.includes('fetch')) {
         errorMessage = 'Failed to fetch template image. Please check the URL.';
-      } else if (error.message.includes('quota')) {
+        statusCode = 400;
+      } else if (error.message.includes('quota') || error.message.includes('limit')) {
         errorMessage = 'API quota exceeded. Please try again later.';
+        statusCode = 429;
+      } else if (error.message.includes('permission') || error.message.includes('403')) {
+        errorMessage = 'Permission denied. Please check your API key permissions.';
+        statusCode = 403;
       }
     }
     
@@ -126,7 +139,7 @@ Return ONLY the meme text/caption without any explanations or additional context
         success: false,
         error: errorMessage,
       },
-      { status: 500 }
+      { status: statusCode }
     );
   }
 }

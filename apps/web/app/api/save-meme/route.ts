@@ -1,5 +1,5 @@
-import { NextRequest, NextResponse } from 'next/server';
-import { saveMeme } from 'database';
+import type { NextRequest } from 'next/server';
+import { NextResponse } from 'next/server';
 
 export async function POST(request: NextRequest) {
   try {
@@ -20,6 +20,7 @@ export async function POST(request: NextRequest) {
       );
     }
 
+    const { saveMeme } = await import('database');
     const result = await saveMeme(prompt, imageBlob, templateId, userId || undefined);
 
     if (!result.success) {

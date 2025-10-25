@@ -1,6 +1,5 @@
 import type { NextRequest } from 'next/server';
 import { NextResponse } from 'next/server';
-import { getTemplates } from 'database';
 
 // Mock data for development when Supabase is not configured
 const MOCK_TEMPLATES = [
@@ -70,6 +69,7 @@ export async function GET(request: NextRequest) {
   try {
     // Try to get templates from Supabase
     try {
+      const { getTemplates } = await import('database');
       const templates = await getTemplates(page, limit);
       return NextResponse.json({
         success: true,

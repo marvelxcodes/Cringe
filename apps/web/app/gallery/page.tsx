@@ -68,7 +68,7 @@ export default function GalleryPage() {
             </svg>
             Back to Templates
           </button>
-          <h1 className="text-4xl sm:text-5xl font-bold text-gray-900 dark:text-white mb-3">Your Meme Gallery</h1>
+          <h1 className="text-4xl sm:text-5xl font-bold text-gray-900 dark:text-white mb-3">Memes Gallery</h1>
           <p className="text-lg sm:text-xl text-gray-600 dark:text-gray-400">
             {memes.length > 0 ? `${memes.length} ${memes.length === 1 ? 'meme' : 'memes'} saved` : 'Your creative collection'}
           </p>
